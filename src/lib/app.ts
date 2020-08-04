@@ -1,7 +1,7 @@
 import Component from 'lib/component'
 
 
-/** An Application Component for new projects w / top-level component specific features */
+/** An Application Component for new projects w/ top-level component specific features */
 export default class App extends Component {
     constructor(template: string, components?: { [key: string]: { new(): Component } }) {
         super('App', template, components)
