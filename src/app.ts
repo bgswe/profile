@@ -1,18 +1,19 @@
 import App from 'lib/app'
-import Component from 'lib/component'
+
+import Subheader from '@/components/subheader'
+
 
 // Include Global Application styles
 import '@/scss/styles.scss'
 
-// Test class for a custom defined component
-class Subheader extends Component {
+// Create a new application
+class MyApp extends App {
     constructor() {
-        super('Subheader', '<h4>Beep boop!</h4>')
+        super(`
+            <h1>Hello World</h2>
+            <Subheader ref="sub"></Subheader>
+        `, { Subheader })
     }
 }
 
-// Create a new application
-new App(`
-    <h1>Hello World</h2>
-    <Subheader></Subheader>
-`, { Subheader })
+new MyApp()

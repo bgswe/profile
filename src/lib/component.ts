@@ -2,8 +2,8 @@ import Registry from 'lib/registry'
 
 
 /** 
- * A class wh/ establishes a unit of the UI 
- * It is meant to be extended where a custom component is defined
+ * A class wh/ establishes a unit of the UI.
+ * It is meant to be extended where a custom component is defined.
  * */
 export default class Component {
     private _name: string
@@ -11,9 +11,10 @@ export default class Component {
     private _el: HTMLElement
 
     // A local component registry to track which other components are in scope of this component
-    private _registry = new Registry()
+    private _registry: Registry = new Registry()
+    private _refs: { [key: string]: HTMLElement } = {}
 
-    // Requires a component to be named, have a template, and optional components in scope
+    /** Requires a component to be named, have a template, and optional components in scope */
     constructor(name: string, template: string, components?: { [key: string]: { new(): Component } }) {
         this._name = name
 
@@ -37,10 +38,14 @@ export default class Component {
         return this._name
     }
 
-    // Parses the HTML child nodes in the provided template for custom components and attemps to
-    // instantiate them if present in the local registry
+    get refs(): { [key: string]: HTMLElement } {
+        return this._refs
+    }
+
+    /** Iterates through children HTMLElements and looks for element refs, and custom components */
     identifyComponents(): void {
-        Array.from(this._el.children).forEach((child, index) => {
+        Array.from(this._el.children).forEach((child: HTMLElement, index: number) => {
+            // Search for component tags and instantiate an instance of them
             if (child instanceof HTMLUnknownElement) {
                 const componentName = child.tagName
 
@@ -51,6 +56,10 @@ export default class Component {
                 } else
                     throw `Component ${componentName} is not locally registered`
             }
+
+            // Identify any element references declared in the template
+            if (child.hasAttribute('ref'))
+                this._refs[child.getAttribute('ref')] = <HTMLElement>this._el.children.item(index)
         })
     }
 }
