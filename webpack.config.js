@@ -19,7 +19,11 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.scss$/i,
+                test: /\.pug$/,
+                loader: 'pug-loader',
+            },
+            {
+                test: /\.scss$/,
                 use: [
                     'style-loader',
                     'css-loader',
@@ -39,5 +43,8 @@ module.exports = {
             '@': path.resolve(__dirname, 'src'),
             'lib': path.resolve(__dirname, 'src/lib'),
         },
+    },
+    node: {
+        fs: 'empty'
     },
 };
